@@ -17,10 +17,9 @@ const double eps=1e-6;
 
 inline double sq(double a){ return a*a;};
 
+// checks if two circles intersect. Returns true even if they touch
 bool inter(int i,int j,std::vector<double>& x,std::vector<double>& y,std::vector<double>& r){
-	// std::cout<<x[i]<<" "<<y[i]<<" "<<r[i]<<" "<<x[j]<<" "<<y[j]<<" "<<r[j]<<"\n";
 	double d = std::sqrt(sq(x[i]-x[j])+sq(y[i]-y[j]));
-	// std::cout<<d<<"\n";
 	if(d >= r[i] && d >= r[j]){
 		if((r[i]+r[j]) >= d)
 			return true;
@@ -31,21 +30,23 @@ bool inter(int i,int j,std::vector<double>& x,std::vector<double>& y,std::vector
 	if(d<std::max(r[i],r[j]) && (d+std::min(r[i],r[j]))>=std::max(r[i],r[j])){
 		return true;
 	}
-	// std::cout<<"return false\n";
 	return false;
 }
 
+//solves for two roots of a quadratic equation with real roots. x1 and x2 are the two roots
 void quadratic(double a,double b,double c,double& x1,double& x2){
 	x1 = (-b-std::sqrt(sq(b)-4*a*c))/(2*a);
 	x2 = (-b+std::sqrt(sq(b)-4*a*c))/(2*a);
 }
 
+//solves for y in equation of line for a given x
 void lyx(double a,double b,double c,double& x, double& y){
 	if(b){
 		y=(c-a*x)/b;
 	}
 }
 
+// solves for intersection of a circle and a line provided they intersect. (x1,y1) and (x2,y2) are required points
 bool lcf(double x,double y,double r,double a,double b, double c,std::vector<double>& ans){
 	double x1,x2,y1,y2;
 	if(b)
@@ -63,6 +64,7 @@ bool lcf(double x,double y,double r,double a,double b, double c,std::vector<doub
 	return true;
 }
 
+// checks whether a circle j lies completely inside the other circle i
 inline bool f4(int j,int i,std::vector<double>& x,std::vector<double>& y,std::vector<double>& r){
 	if(j!=i && (std::sqrt(sq(x[i]-x[j])+sq(y[i]-y[j]))+r[j])<=r[i]){
 		return true;
@@ -157,6 +159,11 @@ double f(int n,std::vector<double> x,std::vector<double> y,std::vector<double> r
 	return ans;
 }
 
+
+//input format 
+// n        for number of circles
+// n lines each containing x y r for that respective circle
+// modify as per your need... Welcome!
 int main(){
 	std::ios::sync_with_stdio(false);
 	std::cin.tie(NULL);
