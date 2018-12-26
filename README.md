@@ -1,6 +1,6 @@
 # UsefulCodes
 
-*click on contents to go to codefiles*
+> *click on contents to go to codefiles*
 
 Contents:
 1. [Area of intersection of a circle and a rectangle](https://github.com/deeepeshthakur/UsefulCodes/blob/master/AreaOfInterOfCircleAndRectangle.cpp)
