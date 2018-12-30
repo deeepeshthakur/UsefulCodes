@@ -72,7 +72,7 @@ inline double gth(double x,double y){
 }
 
 inline double f1(double x,double y, double r, double theta){
-	return r*(2*y*std::cos(theta)+3*x*std::sin(theta))+ sq(r)*(theta+5*std::sin(theta)*std::cos(theta))*0.5;
+	return r*(x*std::sin(theta))+ sq(r)*(theta+std::sin(theta)*std::cos(theta))*0.5;
 }
 
 double f(int n,std::vector<double> x,std::vector<double> y,std::vector<double> r){
