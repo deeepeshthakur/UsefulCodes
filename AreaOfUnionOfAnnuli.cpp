@@ -30,7 +30,19 @@ inline double sq(double a){
 	return a*a;
 }
 
-inline double gth(double x,double y){
+inline void f107(std::vector<std::vector<double>>& t,double a,double b){
+	a=((a>pii)?a-pii:a);
+	b=((b>pii)?b-pii:b);
+	if(a<b){
+		t.pb({a,b});
+	}
+	if(a>b){
+		t.pb({a,pii});
+		t.pb({0.0,b});
+	}
+}
+
+inline double f106(double x,double y){
 	if(x>0.0&&y==0.0){ return 0.0;}
 	if(x>0.0&&y>0.0){ return std::atan(y/x);}
 	if(x==0.0&&y>0){ return pi/2.0;}
@@ -42,31 +54,20 @@ inline double gth(double x,double y){
 	return 0.0;
 }
 
-inline bool inter(double x1,double y1,double x2,double y2,double r1,double r2){
+inline bool f105(double x1,double y1,double x2,double y2,double r1,double r2){
 	double d=std::sqrt(sq(x1-x2)+sq(y1-y2));
 	return (d>=r1+r2 || std::abs(r1-r2)>=d) ? false:true;
 }
 
-inline bool pincircle(double x1,double y1,double x,double y,double r){
+inline bool f104(double x1,double y1,double x,double y,double r){
 	return (std::sqrt(sq(x1-x)+sq(y1-y))<r) ? true:false;
 }
 
-inline bool inside(double x1,double y1,double x2,double y2,double r1,double r2){
+inline bool f103(double x1,double y1,double x2,double y2,double r1,double r2){
 	return (r1-r2>=std::sqrt(sq(x1-x2)+sq(y1-y2))) ? true:false;
 }
 
-void f10(std::vector<std::vector<double>>& t,double& a,double& b){
-	if(b>pii){
-		t.pb({a,pii});
-		t.pb({0.0,b-pii});
-	}
-	else{
-		t.pb({a,b});
-	}
-}
-
-inline double integrate(double th1,double th2,double x,double y,double r){
-	// std::cout<<r2d(th1)<<" "<<r2d(th2)<<" "<<x<<" "<<y<<" "<<r<<std::endl;
+inline double f102(double th1,double th2,double x,double y,double r){
 	return x*r*(std::sin(th2)-std::sin(th1))+sq(r)*((th2+std::sin(th2)*std::cos(th2))-(th1+std::sin(th1)*std::cos(th1)))*0.5;
 }
 
@@ -88,7 +89,7 @@ void lcf(double x,double y,double r,double a,double b, double c,std::vector<doub
 		quadratic(1+sq(a/b),-2*x-2*(a/b)*(c/b-y),sq(x)+sq(c/b-y)-sq(r),x1,x2);
 		lyx(a,b,c,x1,y1);
 		lyx(a,b,c,x2,y2);
-		ans={gth(x1-x,y1-y),gth(x2-x,y2-y)};
+		ans={f106(x1-x,y1-y),f106(x2-x,y2-y)};
 		if(ans[0]>ans[1]){
 			std::swap(ans[0],ans[1]);
 		}
@@ -96,14 +97,14 @@ void lcf(double x,double y,double r,double a,double b, double c,std::vector<doub
 	else{
 		quadratic(1,-2*y,sq(y)+sq(c/a-x)-sq(r),y1,y2);
 		x1=c/a;
-		ans={gth(x1-x,y1-y),gth(x1-x,y2-y)};
+		ans={f106(x1-x,y1-y),f106(x1-x,y2-y)};
 		if(ans[0]>ans[1]){
 			std::swap(ans[0],ans[1]);
 		}
 	}
 }
 
-double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double>& r1,std::vector<double>& r2){
+double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double>& r1,std::vector<double>& r2){
 	double ans=0.0;
 	rep(i,0,n){
 		//outer circle
@@ -111,16 +112,16 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 			std::vector<std::vector<double>> m{},z{},p{};
 			rep(j,0,n){
 				if(i!=j){
-					if(inter(x[i],y[i],x[j],y[j],r1[i],r1[j])){
-						if(inter(x[i],y[i],x[j],y[j],r1[i],r2[j])){
+					if(f105(x[i],y[i],x[j],y[j],r1[i],r1[j])){
+						if(f105(x[i],y[i],x[j],y[j],r1[i],r2[j])){
 							std::vector<double> ans1{},ans2{};
 							lcf(x[i],y[i],r1[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r1[i])-sq(r1[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans1);
 							lcf(x[i],y[i],r1[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r1[i])-sq(r2[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans2);
-							if(!pincircle(x[i]+r1[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r1[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
+							if(!f104(x[i]+r1[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r1[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
 								std::swap(ans1[0],ans1[1]);
 							}
 
-							if(!pincircle(x[i]+r1[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r1[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
+							if(!f104(x[i]+r1[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r1[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
 								std::swap(ans2[0],ans2[1]);
 							}
 
@@ -131,14 +132,15 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 							if(ans2[0]>ans2[1]){
 								ans2[1]+=pii;
 							}
-							f10(z,ans1[0],ans2[0]);
-							f10(z,ans2[1],ans1[1]);
-							f10(m,ans2[0],ans2[1]);						
+
+							f107(z,ans1[0],ans2[0]);
+							f107(z,ans2[1],ans1[1]);
+							f107(m,ans2[0],ans2[1]);						
 						}
 						else{
 							std::vector<double> ans1{};
 							lcf(x[i],y[i],r1[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r1[i])-sq(r1[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans1);
-							if(!pincircle(x[i]+r1[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r1[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
+							if(!f104(x[i]+r1[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r1[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
 								std::swap(ans1[0],ans1[1]);
 							}
 
@@ -146,20 +148,20 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 								ans1[1]+=pii;
 							}
 
-							f10(z,ans1[0],ans1[1]);
+							f107(z,ans1[0],ans1[1]);
 						}
 					}
 					else{
-						if(inside(x[i],y[i],x[j],y[j],r1[i],r1[j])){
-							if(inside(x[i],y[i],x[j],y[j],r1[i],r2[j])){
+						if(f103(x[i],y[i],x[j],y[j],r1[i],r1[j])){
+							if(f103(x[i],y[i],x[j],y[j],r1[i],r2[j])){
 								m.pb({0.0,pii});
 							}
 							else{
-								if(inter(x[i],y[i],x[j],y[j],r1[i],r2[j])){
+								if(f105(x[i],y[i],x[j],y[j],r1[i],r2[j])){
 									std::vector<double> ans1{0.0,pii},ans2{};
 									lcf(x[i],y[i],r1[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r1[i])-sq(r2[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans2);
 
-									if(!pincircle(x[i]+r1[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r1[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
+									if(!f104(x[i]+r1[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r1[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
 										std::swap(ans2[0],ans2[1]);
 									}
 
@@ -203,7 +205,6 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 			std::sort(full(z));
 			std::sort(full(m));
 			std::sort(full(p));
-
 			std::queue<std::pair<double,double>> qm{},qz{},qp{};
 			{
 				for(int i=0;i<z.size();i++){
@@ -238,12 +239,12 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 				double s=0.0,e;
 				while(!qp.empty()){
 					e=qp.front().F;
-					ans+=integrate(s,e,x[i],y[i],r1[i]);
+					ans+=f102(s,e,x[i],y[i],r1[i]);
 					s=qp.front().S;
 					qp.pop();
 				}
 				e=pii;
-				ans+=integrate(s,e,x[i],y[i],r1[i]);
+				ans+=f102(s,e,x[i],y[i],r1[i]);
 
 				while(!qm.empty()||!qz.empty()){
 					if(qm.empty()||qz.empty()){
@@ -254,7 +255,7 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 						}
 						else{
 							while(!qm.empty()){
-								ans+=integrate(qm.front().S,qm.front().F,x[i],y[i],r1[i]);
+								ans-=f102(qm.front().S,qm.front().F,x[i],y[i],r1[i]);
 								qm.pop();
 							}
 						}
@@ -277,11 +278,11 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 						}
 						else{
 							if(qz.front().F<=qm.front().S){
-								ans+=integrate(qz.front().F,qm.front().F,x[i],y[i],r1[i]);
+								ans-=f102(qz.front().F,qm.front().F,x[i],y[i],r1[i]);
 								qm.front().F=qz.front().F;
 							}
 							else{
-								ans+=integrate(qm.front().S,qm.front().F,x[i],y[i],r1[i]);
+								ans-=f102(qm.front().S,qm.front().F,x[i],y[i],r1[i]);
 								qm.pop();
 							}
 						}
@@ -289,23 +290,22 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 				}
 			}
 		}
-		// std::cout<<std::endl;
 		//inner circle
 		{
 			std::vector<std::vector<double>> z{};
 			rep(j,0,n){
 				if(i!=j){
-					if(inter(x[i],y[i],x[j],y[j],r2[i],r1[j])){
-						if(inter(x[i],y[i],x[j],y[j],r2[i],r2[j])){
+					if(f105(x[i],y[i],x[j],y[j],r2[i],r1[j])){
+						if(f105(x[i],y[i],x[j],y[j],r2[i],r2[j])){
 							std::vector<double> ans1{},ans2{};
 							lcf(x[i],y[i],r2[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r2[i])-sq(r1[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans1);
 							lcf(x[i],y[i],r2[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r2[i])-sq(r2[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans2);
 
-							if(!pincircle(x[i]+r2[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r2[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
+							if(!f104(x[i]+r2[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r2[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
 								std::swap(ans1[0],ans1[1]);
 							}
 
-							if(!pincircle(x[i]+r2[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r2[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
+							if(!f104(x[i]+r2[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r2[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
 								std::swap(ans2[0],ans2[1]);
 							}
 
@@ -317,13 +317,13 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 								ans2[1]+=pii;
 							}
 
-							f10(z,ans1[0],ans2[0]);
-							f10(z,ans2[1],ans1[1]);							
+							f107(z,ans1[0],ans2[0]);
+							f107(z,ans2[1],ans1[1]);							
 						}
 						else{
 							std::vector<double> ans1{};
 							lcf(x[i],y[i],r2[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r2[i])-sq(r1[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans1);
-							if(!pincircle(x[i]+r2[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r2[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
+							if(!f104(x[i]+r2[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r2[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
 								std::swap(ans1[0],ans1[1]);
 							}
 
@@ -331,17 +331,17 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 								ans1[1]+=pii;
 							}
 
-							f10(z,ans1[0],ans1[1]);
+							f107(z,ans1[0],ans1[1]);
 						}
 					}
 					else{
-						if(inside(x[i],y[i],x[j],y[j],r2[i],r1[j])){
-							if(!inside(x[i],y[i],x[j],y[j],r2[i],r2[j])){
-								if(inter(x[i],y[i],x[j],y[j],r1[i],r2[j])){
+						if(f103(x[i],y[i],x[j],y[j],r2[i],r1[j])){
+							if(!f103(x[i],y[i],x[j],y[j],r2[i],r2[j])){
+								if(f105(x[i],y[i],x[j],y[j],r1[i],r2[j])){
 									std::vector<double> ans2{};
 									lcf(x[i],y[i],r2[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r2[i])-sq(r2[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans2);
 
-									if(!pincircle(x[i]+r2[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r2[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
+									if(!f104(x[i]+r2[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r2[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
 										std::swap(ans2[0],ans2[1]);
 									}
 
@@ -383,15 +383,14 @@ double f1(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double
 				double s=0.0,e;
 				while(!qz.empty()){
 					e=qz.front().F;
-					ans-=integrate(s,e,x[i],y[i],r2[i]);
+					ans-=f102(s,e,x[i],y[i],r2[i]);
 					s=qz.front().S;
 					qz.pop();
 				}
 				e=pii;
-				ans-=integrate(s,e,x[i],y[i],r2[i]);
+				ans-=f102(s,e,x[i],y[i],r2[i]);
 			}
 		}
-		// std::cout<<std::endl;
 	}
 }
 
@@ -412,7 +411,7 @@ void swapf(int i,int j,std::vector<double>& x,std::vector<double>& y,std::vector
 	std::swap(r2[i],r2[j]);
 }
 
-double f(int n,std::vector<double>& xp,std::vector<double>& yp,std::vector<double>& r1p,std::vector<double>& r2p){
+double f100(int n,std::vector<double>& xp,std::vector<double>& yp,std::vector<double>& r1p,std::vector<double>& r2p){
 	std::vector<bool> flag(n,true);
 	std::vector<double> x,y,r1,r2;
 	
@@ -446,7 +445,7 @@ double f(int n,std::vector<double>& xp,std::vector<double>& yp,std::vector<doubl
 			r2.pb(r2p[i]);
 		}
 	}
-	return f1(x.size(),x,y,r1,r2);
+	return f101(x.size(),x,y,r1,r2);
 }
 
 //Input
@@ -463,6 +462,6 @@ int main(){
 	rep(i,0,n){
 		std::cin>>x[i]>>y[i]>>r2[i]>>r1[i];
 	}
-	std::cout<<f(n,x,y,r1,r2)<<std::endl;
+	std::cout<<f100(n,x,y,r1,r2)<<std::endl;
 	return 0;
 }
