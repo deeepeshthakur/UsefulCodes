@@ -19,18 +19,11 @@ inline double r2d(double a){
 	return a*180/pi;
 }
 
-void printvec(std::vector<std::vector<double>>& a){
-	rep(i,0,a.size()){
-		std::cout<<r2d(a[i][0])<<" "<<r2d(a[i][1])<<"  ";
-	}
-	std::cout<<std::endl;
-}
-
 inline double sq(double a){
 	return a*a;
 }
 
-inline void f107(std::vector<std::vector<double>>& t,double a,double b){
+inline void f307(std::vector<std::vector<double>>& t,double a,double b){
 	a=((a>pii)?a-pii:a);
 	b=((b>pii)?b-pii:b);
 	if(a<b){
@@ -42,7 +35,7 @@ inline void f107(std::vector<std::vector<double>>& t,double a,double b){
 	}
 }
 
-inline double f106(double x,double y){
+inline double f306(double x,double y){
 	if(x>0.0&&y==0.0){ return 0.0;}
 	if(x>0.0&&y>0.0){ return std::atan(y/x);}
 	if(x==0.0&&y>0){ return pi/2.0;}
@@ -54,20 +47,20 @@ inline double f106(double x,double y){
 	return 0.0;
 }
 
-inline bool f105(double x1,double y1,double x2,double y2,double r1,double r2){
+inline bool f305(double x1,double y1,double x2,double y2,double r1,double r2){
 	double d=std::sqrt(sq(x1-x2)+sq(y1-y2));
 	return (d>=r1+r2 || std::abs(r1-r2)>=d) ? false:true;
 }
 
-inline bool f104(double x1,double y1,double x,double y,double r){
+inline bool f304(double x1,double y1,double x,double y,double r){
 	return (std::sqrt(sq(x1-x)+sq(y1-y))<r) ? true:false;
 }
 
-inline bool f103(double x1,double y1,double x2,double y2,double r1,double r2){
-	return (r1-r2>=std::sqrt(sq(x1-x2)+sq(y1-y2))) ? true:false;
+inline bool f303(double x1,double y1,double x2,double y2,double r1,double r2){
+	return (r2-r1>=std::sqrt(sq(x1-x2)+sq(y1-y2))) ? true:false;
 }
 
-inline double f102(double th1,double th2,double x,double y,double r){
+inline double f302(double th1,double th2,double x,double y,double r){
 	return x*r*(std::sin(th2)-std::sin(th1))+sq(r)*((th2+std::sin(th2)*std::cos(th2))-(th1+std::sin(th1)*std::cos(th1)))*0.5;
 }
 
@@ -89,7 +82,7 @@ void lcf(double x,double y,double r,double a,double b, double c,std::vector<doub
 		quadratic(1+sq(a/b),-2*x-2*(a/b)*(c/b-y),sq(x)+sq(c/b-y)-sq(r),x1,x2);
 		lyx(a,b,c,x1,y1);
 		lyx(a,b,c,x2,y2);
-		ans={f106(x1-x,y1-y),f106(x2-x,y2-y)};
+		ans={f306(x1-x,y1-y),f306(x2-x,y2-y)};
 		if(ans[0]>ans[1]){
 			std::swap(ans[0],ans[1]);
 		}
@@ -97,14 +90,14 @@ void lcf(double x,double y,double r,double a,double b, double c,std::vector<doub
 	else{
 		quadratic(1,-2*y,sq(y)+sq(c/a-x)-sq(r),y1,y2);
 		x1=c/a;
-		ans={f106(x1-x,y1-y),f106(x1-x,y2-y)};
+		ans={f306(x1-x,y1-y),f306(x1-x,y2-y)};
 		if(ans[0]>ans[1]){
 			std::swap(ans[0],ans[1]);
 		}
 	}
 }
 
-double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double>& r1,std::vector<double>& r2){
+double f301(int n,std::vector<double>& x,std::vector<double>& y,std::vector<double>& r1,std::vector<double>& r2){
 	double ans=0.0;
 	rep(i,0,n){
 		//outer circle
@@ -112,16 +105,16 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 			std::vector<std::vector<double>> m{},z{},p{};
 			rep(j,0,n){
 				if(i!=j){
-					if(f105(x[i],y[i],x[j],y[j],r1[i],r1[j])){
-						if(f105(x[i],y[i],x[j],y[j],r1[i],r2[j])){
+					if(f305(x[i],y[i],x[j],y[j],r1[i],r1[j])){
+						if(f305(x[i],y[i],x[j],y[j],r1[i],r2[j])){
 							std::vector<double> ans1{},ans2{};
 							lcf(x[i],y[i],r1[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r1[i])-sq(r1[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans1);
 							lcf(x[i],y[i],r1[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r1[i])-sq(r2[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans2);
-							if(!f104(x[i]+r1[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r1[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
+							if(!f304(x[i]+r1[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r1[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
 								std::swap(ans1[0],ans1[1]);
 							}
 
-							if(!f104(x[i]+r1[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r1[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
+							if(!f304(x[i]+r1[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r1[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
 								std::swap(ans2[0],ans2[1]);
 							}
 
@@ -133,14 +126,14 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 								ans2[1]+=pii;
 							}
 
-							f107(z,ans1[0],ans2[0]);
-							f107(z,ans2[1],ans1[1]);
-							f107(m,ans2[0],ans2[1]);						
+							f307(z,ans1[0],ans2[0]);
+							f307(z,ans2[1],ans1[1]);
+							f307(m,ans2[0],ans2[1]);						
 						}
 						else{
 							std::vector<double> ans1{};
 							lcf(x[i],y[i],r1[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r1[i])-sq(r1[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans1);
-							if(!f104(x[i]+r1[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r1[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
+							if(!f304(x[i]+r1[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r1[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
 								std::swap(ans1[0],ans1[1]);
 							}
 
@@ -148,20 +141,20 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 								ans1[1]+=pii;
 							}
 
-							f107(z,ans1[0],ans1[1]);
+							f307(z,ans1[0],ans1[1]);
 						}
 					}
 					else{
-						if(f103(x[i],y[i],x[j],y[j],r1[i],r1[j])){
-							if(f103(x[i],y[i],x[j],y[j],r1[i],r2[j])){
+						if(f303(x[i],y[i],x[j],y[j],r1[i],r1[j])){
+							if(f303(x[i],y[i],x[j],y[j],r1[i],r2[j])){
 								m.pb({0.0,pii});
 							}
 							else{
-								if(f105(x[i],y[i],x[j],y[j],r1[i],r2[j])){
+								if(f305(x[i],y[i],x[j],y[j],r1[i],r2[j])){
 									std::vector<double> ans1{0.0,pii},ans2{};
 									lcf(x[i],y[i],r1[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r1[i])-sq(r2[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans2);
 
-									if(!f104(x[i]+r1[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r1[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
+									if(f304(x[i]+r1[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r1[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
 										std::swap(ans2[0],ans2[1]);
 									}
 
@@ -239,12 +232,12 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 				double s=0.0,e;
 				while(!qp.empty()){
 					e=qp.front().F;
-					ans+=f102(s,e,x[i],y[i],r1[i]);
+					ans+=f302(s,e,x[i],y[i],r1[i]);
 					s=qp.front().S;
 					qp.pop();
 				}
 				e=pii;
-				ans+=f102(s,e,x[i],y[i],r1[i]);
+				ans+=f302(s,e,x[i],y[i],r1[i]);
 
 				while(!qm.empty()||!qz.empty()){
 					if(qm.empty()||qz.empty()){
@@ -255,7 +248,7 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 						}
 						else{
 							while(!qm.empty()){
-								ans-=f102(qm.front().S,qm.front().F,x[i],y[i],r1[i]);
+								ans-=f302(qm.front().S,qm.front().F,x[i],y[i],r1[i]);
 								qm.pop();
 							}
 						}
@@ -278,11 +271,11 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 						}
 						else{
 							if(qz.front().F<=qm.front().S){
-								ans-=f102(qz.front().F,qm.front().F,x[i],y[i],r1[i]);
+								ans-=f302(qz.front().F,qm.front().F,x[i],y[i],r1[i]);
 								qm.front().F=qz.front().F;
 							}
 							else{
-								ans-=f102(qm.front().S,qm.front().F,x[i],y[i],r1[i]);
+								ans-=f302(qm.front().S,qm.front().F,x[i],y[i],r1[i]);
 								qm.pop();
 							}
 						}
@@ -295,17 +288,17 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 			std::vector<std::vector<double>> z{};
 			rep(j,0,n){
 				if(i!=j){
-					if(f105(x[i],y[i],x[j],y[j],r2[i],r1[j])){
-						if(f105(x[i],y[i],x[j],y[j],r2[i],r2[j])){
+					if(f305(x[i],y[i],x[j],y[j],r2[i],r1[j])){
+						if(f305(x[i],y[i],x[j],y[j],r2[i],r2[j])){
 							std::vector<double> ans1{},ans2{};
 							lcf(x[i],y[i],r2[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r2[i])-sq(r1[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans1);
 							lcf(x[i],y[i],r2[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r2[i])-sq(r2[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans2);
 
-							if(!f104(x[i]+r2[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r2[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
+							if(!f304(x[i]+r2[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r2[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
 								std::swap(ans1[0],ans1[1]);
 							}
 
-							if(!f104(x[i]+r2[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r2[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
+							if(!f304(x[i]+r2[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r2[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
 								std::swap(ans2[0],ans2[1]);
 							}
 
@@ -317,13 +310,13 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 								ans2[1]+=pii;
 							}
 
-							f107(z,ans1[0],ans2[0]);
-							f107(z,ans2[1],ans1[1]);							
+							f307(z,ans1[0],ans2[0]);
+							f307(z,ans2[1],ans1[1]);							
 						}
 						else{
 							std::vector<double> ans1{};
 							lcf(x[i],y[i],r2[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r2[i])-sq(r1[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans1);
-							if(!f104(x[i]+r2[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r2[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
+							if(!f304(x[i]+r2[i]*std::cos((ans1[0]+ans1[1])*0.5),y[i]+r2[i]*std::sin((ans1[0]+ans1[1])*0.5),x[j],y[j],r1[j])){
 								std::swap(ans1[0],ans1[1]);
 							}
 
@@ -331,17 +324,17 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 								ans1[1]+=pii;
 							}
 
-							f107(z,ans1[0],ans1[1]);
+							f307(z,ans1[0],ans1[1]);
 						}
 					}
 					else{
-						if(f103(x[i],y[i],x[j],y[j],r2[i],r1[j])){
-							if(!f103(x[i],y[i],x[j],y[j],r2[i],r2[j])){
-								if(f105(x[i],y[i],x[j],y[j],r1[i],r2[j])){
+						if(f303(x[i],y[i],x[j],y[j],r2[i],r1[j])){
+							if(!f303(x[i],y[i],x[j],y[j],r2[i],r2[j])){
+								if(f305(x[i],y[i],x[j],y[j],r2[i],r2[j])){
 									std::vector<double> ans2{};
 									lcf(x[i],y[i],r2[i],2*(x[j]-x[i]),2*(y[j]-y[i]),sq(r2[i])-sq(r2[j])+sq(x[j])-sq(x[i])+sq(y[j])-sq(y[i]),ans2);
 
-									if(!f104(x[i]+r2[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r2[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
+									if(f304(x[i]+r2[i]*std::cos((ans2[0]+ans2[1])*0.5),y[i]+r2[i]*std::sin((ans2[0]+ans2[1])*0.5),x[j],y[j],r2[j])){
 										std::swap(ans2[0],ans2[1]);
 									}
 
@@ -383,15 +376,16 @@ double f101(int n,std::vector<double>& x,std::vector<double>& y,std::vector<doub
 				double s=0.0,e;
 				while(!qz.empty()){
 					e=qz.front().F;
-					ans-=f102(s,e,x[i],y[i],r2[i]);
+					ans-=f302(s,e,x[i],y[i],r2[i]);
 					s=qz.front().S;
 					qz.pop();
 				}
 				e=pii;
-				ans-=f102(s,e,x[i],y[i],r2[i]);
+				ans-=f302(s,e,x[i],y[i],r2[i]);
 			}
 		}
 	}
+	return ans;
 }
 
 bool truef(int i,int j,std::vector<double>& x,std::vector<double>& y,std::vector<double>& r1,std::vector<double>& r2){
@@ -411,7 +405,7 @@ void swapf(int i,int j,std::vector<double>& x,std::vector<double>& y,std::vector
 	std::swap(r2[i],r2[j]);
 }
 
-double f100(int n,std::vector<double>& xp,std::vector<double>& yp,std::vector<double>& r1p,std::vector<double>& r2p){
+double f300(int n,std::vector<double>& xp,std::vector<double>& yp,std::vector<double>& r1p,std::vector<double>& r2p){
 	std::vector<bool> flag(n,true);
 	std::vector<double> x,y,r1,r2;
 	
@@ -445,7 +439,7 @@ double f100(int n,std::vector<double>& xp,std::vector<double>& yp,std::vector<do
 			r2.pb(r2p[i]);
 		}
 	}
-	return f101(x.size(),x,y,r1,r2);
+	return f301(x.size(),x,y,r1,r2);
 }
 
 //Input
@@ -462,6 +456,6 @@ int main(){
 	rep(i,0,n){
 		std::cin>>x[i]>>y[i]>>r2[i]>>r1[i];
 	}
-	std::cout<<f100(n,x,y,r1,r2)<<std::endl;
+	std::cout<<std::fixed<<std::setprecision(6)<<f300(n,x,y,r1,r2)<<std::endl;
 	return 0;
 }
